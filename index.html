@@ -284,17 +284,71 @@
             margin-bottom: 15px;
         }
 
-        @media (max-width: 768px) {
-            .about-item, .achievement-item {
-                flex-basis: 100%;
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 15px;
             }
-
+            
             h1 {
                 font-size: 48px;
             }
-
+            
             h2 {
                 font-size: 32px;
+            }
+            
+            .about-item, .achievement-item {
+                flex-basis: calc(50% - 20px);
+            }
+            
+            .project-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 10px 0;
+            }
+            
+            .hero-content {
+                padding: 0 20px;
+            }
+            
+            h1 {
+                font-size: 36px;
+            }
+            
+            .about-item, .achievement-item {
+                flex-basis: 100%;
+            }
+            
+            .skill-item {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 28px;
+            }
+            
+            h2 {
+                font-size: 24px;
+            }
+            
+            .project-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -443,11 +497,11 @@
             <div class="contact-info">
                 <div class="contact-item">
                     <i class="fas fa-envelope"></i>
-                    <p>mairajuddeen.work@gmail.com</p>
+                    <p>mairajuddeen@example.com</p>
                 </div>
                 <div class="contact-item">
                     <i class="fas fa-phone"></i>
-                    <p>+91 9818545746</p>
+                    <p>+1 (123) 456-7890</p>
                 </div>
             </div>
             <a href="mailto:mairajuddeen@example.com" class="contact-button">Send Email</a>
@@ -470,7 +524,7 @@
 
     <script>
         const changingText = document.querySelector('.changing-text');
-        const texts = ['Ethical Hacker', 'Cyber Security Expert', 'Artist', 'Musician', 'Tech-Geek'];
+        const texts = ['Ethical Hacker', 'Cyber Security Expert', 'Digital Innovator'];
         let textIndex = 0;
         let charIndex = 0;
 
@@ -495,35 +549,22 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(type, 500);
-        });
+        async function updateVisitorCount() {
+            try {
+                const response = await fetch('/.netlify/functions/visitorCounter');
+                const data = await response.json();
+                animateVisitorCount(data.count, document.getElementById('visitor-count'));
+            } catch (error) {
+                console.error('Failed to update visitor count:', error);
+            }
+        }
 
-        // Simple visitor counter (for demonstration purposes)
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-    <script>
-        // ... (previous code remains the same)
-    
-        // Updated visitor counter with animation
-        let visitorCount = localStorage.getItem('visitorCount') || 0;
-        visitorCount++;
-        localStorage.setItem('visitorCount', visitorCount);
-    
         function animateVisitorCount(target, element) {
-            let start = Math.max(0, target - 20);
+            let start = Math.max(0, target - 10);
             let current = start;
             const increment = 1;
-            const stepTime = 100; // milliseconds
-    
+            const stepTime = 100;
+
             function step() {
                 current += increment;
                 element.textContent = current;
@@ -531,16 +572,24 @@
                     setTimeout(step, stepTime);
                 }
             }
-    
+
             setTimeout(step, stepTime);
         }
-    
+
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(type, 500);
-            animateVisitorCount(visitorCount, document.getElementById('visitor-count'));
+            updateVisitorCount();
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
         });
-    
-        // ... (rest of the code remains the same)
     </script>
 </body>
 </html>
